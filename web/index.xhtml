@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/template/template.xhtml">
+        <ui:define name="titulo">Lista de produtos do Leilão</ui:define>
+        <ui:define name="conteudo">
+            <h:form id="formListagem">
+                <h:panelGroup rendered="#{!ControleLeilao.editando}">
+                    <p:messages/>
+                    <h1>Leilões ativos</h1>
+                    <p:commandButton value="Verifica" icon="ui-icon-plus"
+                                     actionListener="#{ControleLeilao.leilaoBean.zeraContador()}"
+                                                 update="formEdicao formListagem"/>
+                    <p:dataTable value="#{ControleLeilao.leilaoBean.lista}" var="obj"
+                                 reflow="true">
+                        
+                        <p:column headerText="ID">
+                            <p:outputLabel value="#{obj.id}" />
+                        </p:column> 
+                        <p:column headerText="#{msgs['leilao.form.nomeDono']}">
+                            <p:outputLabel value="#{obj.nome}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs['leilao.form.contato']}">
+                            <p:outputLabel value="#{obj.telefone}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs['leilao.form.descricao']}">
+                            <p:outputLabel value="#{obj.descricao}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs['leilao.form.valorMinimo']}">
+                            <p:outputLabel value="#{obj.valorMinimo}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs['leilao.form.valorGanho']}">
+                            <p:outputLabel value="#{obj.valorGanho}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs['leilao.form.validade']}">
+                            <p:outputLabel value="#{obj.validade}">
+                                <f:converter converterId="converterCalendar"/>
+                            </p:outputLabel>
+                        </p:column>
+                        <p:column headerText="#{msgs['leilao.form.ultimoLance']}">
+                            <p:outputLabel value="#{obj.lance}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs['leilao.form.arrematador']}">
+                            <p:outputLabel value="#{obj.nomePessoa}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs['leilao.form.acoes']}">
+                            <div align="center">
+                                <p:commandButton value="Lance" icon="ui-icon-plus"
+                                                 actionListener="#{ControleLeilao.lance(obj)}"
+                                                 update="formEdicao formListagem"/>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                    <h1>Leilões finalizados</h1>
+                    <p:dataTable value="#{ControleLeilao.leilaoBean.listaFinalizado}" var="obj2"
+                                 reflow="true">
+                        <p:column headerText="ID">
+                            <p:outputLabel value="#{obj2.id}"/>
+                        </p:column> 
+                        <p:column headerText="#{msgs['leilao.form.nomeDono']}">
+                            <p:outputLabel value="#{obj2.nome}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs['leilao.form.descricao']}">
+                            <p:outputLabel value="#{obj2.descricao}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs['leilao.form.arrematador']}">
+                            <p:outputLabel value="#{obj2.nomePessoa}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs['leilao.form.telefoneArematador']}">
+                            <p:outputLabel value="#{obj2.telefonePessoa}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs['leilao.form.lance']}">
+                            <p:outputLabel value="#{obj2.lance}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs['leilao.form.validade']}">
+                            <p:outputLabel value="#{obj2.validade}">
+                                <f:converter converterId="converterCalendar"/>
+                            </p:outputLabel>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+            <ui:include src="/formulario.xhtml"/>
+        </ui:define>
+    </ui:composition>
+</html>
+
